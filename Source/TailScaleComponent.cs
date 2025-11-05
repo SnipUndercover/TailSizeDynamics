@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using Celeste.Mod.Foxeline;
+using Celeste.Mod.TailSizeDynamics.Enums;
 using Celeste.Mod.TailSizeDynamics.ScaleMethods;
 using Celeste.Mod.TailSizeDynamics.StatisticProviders;
 using Monocle;
@@ -88,10 +89,10 @@ public class TailScaleComponent() : Component(active: true, visible: false)
     private void Reset()
         => Engine.Scene = new LevelExit(
             Settings.MinigameResetMode switch {
-                TailScaleSettings.ResetMode.ReturnToMap => LevelExit.Mode.GiveUp,
-                TailScaleSettings.ResetMode.RestartChapter => LevelExit.Mode.Restart,
+                MinigameResetMode.ReturnToMap => LevelExit.Mode.GiveUp,
+                MinigameResetMode.RestartChapter => LevelExit.Mode.Restart,
                 _ => throw new InvalidOperationException(
-                    $"Invalid {nameof(TailScaleSettings.ResetMode)} value: {Settings.MinigameResetMode}"),
+                    $"Invalid {nameof(MinigameResetMode)} value: {Settings.MinigameResetMode}"),
             },
             SceneAs<Level>().Session);
 }

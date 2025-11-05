@@ -1,4 +1,5 @@
-﻿using Celeste.Mod.TailSizeDynamics.MenuItems;
+﻿using Celeste.Mod.TailSizeDynamics.Enums;
+using Celeste.Mod.TailSizeDynamics.MenuItems;
 using Celeste.Mod.TailSizeDynamics.StatisticProviders;
 using Microsoft.Xna.Framework;
 using Monocle;

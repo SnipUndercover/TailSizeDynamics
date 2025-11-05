@@ -1,4 +1,5 @@
 using System;
+using Celeste.Mod.TailSizeDynamics.Enums;
 using Celeste.Mod.TailSizeDynamics.ScaleMethods;
 using Celeste.Mod.TailSizeDynamics.StatisticProviders;
 using JetBrains.Annotations;
@@ -91,7 +92,7 @@ public partial class TailScaleSettings : EverestModuleSettings
     public bool MinigameMode { get; set; } = false;
 
     [UsedImplicitly(Reason = "YamlDotNet requires that accessors be public.")]
-    public ResetMode MinigameResetMode { get; set; } = ResetMode.RestartChapter;
+    public MinigameResetMode MinigameResetMode { get; set; } = MinigameResetMode.RestartChapter;
 
     // ReSharper restore RedundantDefaultMemberInitializer
 

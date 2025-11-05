@@ -1,4 +1,5 @@
-﻿using Celeste.Mod.TailSizeDynamics.MenuItems;
+﻿using Celeste.Mod.TailSizeDynamics.Enums;
+using Celeste.Mod.TailSizeDynamics.MenuItems;
 using FMOD.Studio;
 
 namespace Celeste.Mod.TailSizeDynamics;
@@ -534,7 +535,7 @@ public partial class TailScaleSettings
     #endregion
     #region Minigame Reset Mode
 
-    private TextMenu.Option<ResetMode>? MinigameResetModeToggle;
+    private TextMenu.Option<MinigameResetMode>? MinigameResetModeToggle;
 
     private void CreateMinigameResetModeSlider(TextMenu menu)
     {
@@ -542,18 +543,18 @@ public partial class TailScaleSettings
         const string EnumParentId = DialogId + EnumValueInfix;
 
         // @formatter:off
-        menu.Add(MinigameResetModeToggle = new TextMenu.Option<ResetMode>(
+        menu.Add(MinigameResetModeToggle = new TextMenu.Option<MinigameResetMode>(
             Dialog.Clean(DialogId)));
         // @formatter:on
 
         MinigameResetModeToggle.Add(
-            Dialog.Clean(EnumParentId + nameof(ResetMode.ReturnToMap)),
-            ResetMode.ReturnToMap,
-            MinigameResetMode == ResetMode.ReturnToMap);
+            Dialog.Clean(EnumParentId + nameof(MinigameResetMode.ReturnToMap)),
+            MinigameResetMode.ReturnToMap,
+            MinigameResetMode == MinigameResetMode.ReturnToMap);
         MinigameResetModeToggle.Add(
-            Dialog.Clean(EnumParentId + nameof(ResetMode.RestartChapter)),
-            ResetMode.RestartChapter,
-            MinigameResetMode == ResetMode.RestartChapter);
+            Dialog.Clean(EnumParentId + nameof(MinigameResetMode.RestartChapter)),
+            MinigameResetMode.RestartChapter,
+            MinigameResetMode == MinigameResetMode.RestartChapter);
 
         MinigameResetModeToggle.Change(newValue => MinigameResetMode = newValue);
     }

@@ -3,6 +3,7 @@ using System.Collections;
 using System.Linq;
 using System.Text;
 using Celeste.Mod.Foxeline;
+using Celeste.Mod.TailSizeDynamics.Enums;
 using Celeste.Mod.TailSizeDynamics.ScaleMethods;
 using Celeste.Mod.TailSizeDynamics.StatisticProviders;
 using FMOD.Studio;
@@ -123,7 +124,7 @@ public class TailScaleModule : EverestModule
 
     private static void Spawn(Player player)
     {
-        if (Settings.ScaleMethod != TailScaleSettings.TailScaleMethod.Off
+        if (Settings.ScaleMethod != TailScaleMethod.Off
             && player.Get<TailScaleComponent>() is null)
             player.Add(new TailScaleComponent());
     }

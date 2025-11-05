@@ -1,4 +1,5 @@
-﻿using Celeste.Mod.TailSizeDynamics.StatisticProviders;
+﻿using Celeste.Mod.TailSizeDynamics.Enums;
+using Celeste.Mod.TailSizeDynamics.StatisticProviders;
 using Monocle;
 
 namespace Celeste.Mod.TailSizeDynamics.ScaleMethods;
@@ -32,9 +33,9 @@ public class AccumulativeScaleMethod : IUpdateableScaleMethod
         float jumpScale = provider.TotalJumps * settings.JumpScaleMultiplier;
         float timeScale = provider.TotalFrames * (settings.TimeScaleMultiplier / (int)settings.TimeScaleUnit);
         float mapProgressionScale = settings.MapProgressionScaleMode switch {
-            TailScaleSettings.MapProgressionMode.VisitedRooms =>
+            MapProgressionMode.VisitedRooms =>
                 provider.MapProgression.TotalVisitedRooms,
-            TailScaleSettings.MapProgressionMode.CompletedMaps =>
+            MapProgressionMode.CompletedMaps =>
                 provider.MapProgression.TotalMapsCompleted,
             _ => 0,
         } * settings.MapProgressionScaleMultiplier;
