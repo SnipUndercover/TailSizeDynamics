@@ -1,0 +1,3 @@
+﻿triggers.TailSizeDynamics/ConfigureTailSizeDynamicsTrigger.placements.name.normal=Configure Tail Size Dynamics
+triggers.TailSizeDynamics/DisableTailSizeDynamicsTrigger.placements.name.normal=Disable Tail Size Dynamics
+triggers.TailSizeDynamics/ResetSessionStatisticsTrigger.placements.name.normal=Reset Session Statistics
