@@ -1,4 +1,5 @@
-﻿using Celeste.Mod.TailSizeDynamics.Enums;
+﻿using Celeste.Mod.TailSizeDynamics.Config;
+using Celeste.Mod.TailSizeDynamics.Enums;
 using Celeste.Mod.TailSizeDynamics.MenuItems;
 using Celeste.Mod.TailSizeDynamics.StatisticProviders;
 using Microsoft.Xna.Framework;
@@ -19,13 +20,11 @@ public partial class TailScaleSettings
         // ReSharper disable once MemberHidesStaticFromOuterClass
         private const string DialogRoot = DialogId + "_";
 
-        private readonly TailScaleSettings Settings;
+        private static TailScaleEffectiveConfig EffectiveConfig => TailScaleConfig.EffectiveConfig;
 
-        public StatisticsSubmenuImpl(TailScaleSettings settings)
-            : base(GetLabel(settings), false)
+        public StatisticsSubmenuImpl()
+            : base(GetLabel(), false)
         {
-            Settings = settings;
-
             Add(new TextMenu.SubHeader(Dialog.Clean(DummyHeaderId), false));
         }
 
@@ -33,9 +32,9 @@ public partial class TailScaleSettings
         {
             Clear();
 
-            Label = GetLabel(Settings);
+            Label = GetLabel();
 
-            IStatisticProvider provider = Settings.StatisticProvider;
+            IStatisticProvider provider = EffectiveConfig.StatisticProvider;
 
             CreateHelpText();
             CreateCrystalHeartCountSlider(provider);
@@ -79,7 +78,7 @@ public partial class TailScaleSettings
             CrystalHeartCount = AddStatistic(
                 Dialog.Clean(DialogRoot + "CrystalHearts"),
                 provider.TotalCrystalHearts,
-                Settings.CrystalHeartScaleMultiplier);
+                EffectiveConfig.CrystalHeartScaleMultiplier);
         }
 
         #endregion
@@ -93,7 +92,7 @@ public partial class TailScaleSettings
             CassetteCount = AddStatistic(
                 Dialog.Clean(DialogRoot + "Cassettes"),
                 provider.TotalCassettes,
-                Settings.CassetteScaleMultiplier);
+                EffectiveConfig.CassetteScaleMultiplier);
         }
 
         #endregion
@@ -107,7 +106,7 @@ public partial class TailScaleSettings
             SummitGemCount = AddStatistic(
                 Dialog.Clean(DialogRoot + "SummitGems"),
                 provider.TotalSummitGems,
-                Settings.SummitGemScaleMultiplier);
+                EffectiveConfig.SummitGemScaleMultiplier);
         }
 
         #endregion
@@ -121,7 +120,7 @@ public partial class TailScaleSettings
             StrawberryCount = AddStatistic(
                 Dialog.Clean(DialogRoot + "Strawberries"),
                 provider.TotalStrawberries,
-                Settings.StrawberryScaleMultiplier);
+                EffectiveConfig.StrawberryScaleMultiplier);
         }
 
         #endregion
@@ -135,7 +134,7 @@ public partial class TailScaleSettings
             GoldenStrawberryCount = AddStatistic(
                 Dialog.Clean(DialogRoot + "GoldenStrawberries"),
                 provider.TotalGoldenStrawberries,
-                Settings.GoldenStrawberryScaleMultiplier);
+                EffectiveConfig.GoldenStrawberryScaleMultiplier);
         }
 
         #endregion
@@ -149,7 +148,7 @@ public partial class TailScaleSettings
             WingedGoldenCount = AddStatistic(
                 Dialog.Clean(DialogRoot + "WingedGoldens"),
                 provider.TotalWingedGoldens,
-                Settings.WingedGoldenScaleMultiplier);
+                EffectiveConfig.WingedGoldenScaleMultiplier);
         }
 
         #endregion
@@ -163,7 +162,7 @@ public partial class TailScaleSettings
             MoonberryCount = AddStatistic(
                 Dialog.Clean(DialogRoot + "Moonberries"),
                 provider.TotalMoonberries,
-                Settings.MoonberryScaleMultiplier);
+                EffectiveConfig.MoonberryScaleMultiplier);
         }
 
         #endregion
@@ -177,7 +176,7 @@ public partial class TailScaleSettings
             DeathCount = AddStatistic(
                 Dialog.Clean(DialogRoot + "Deaths"),
                 provider.TotalDeaths,
-                Settings.DeathScaleMultiplier);
+                EffectiveConfig.DeathScaleMultiplier);
         }
 
         #endregion
@@ -191,7 +190,7 @@ public partial class TailScaleSettings
             DashCount = AddStatistic(
                 Dialog.Clean(DialogRoot + "Dashes"),
                 provider.TotalDashes,
-                Settings.DashScaleMultiplier);
+                EffectiveConfig.DashScaleMultiplier);
         }
 
         #endregion
@@ -205,7 +204,7 @@ public partial class TailScaleSettings
             JumpCount = AddStatistic(
                 Dialog.Clean(DialogRoot + "Jumps"),
                 provider.TotalJumps,
-                Settings.JumpScaleMultiplier);
+                EffectiveConfig.JumpScaleMultiplier);
         }
 
         #endregion
@@ -218,8 +217,8 @@ public partial class TailScaleSettings
         {
             TimeCount = AddStatistic(
                 Dialog.Clean(DialogRoot + "Time"),
-                provider.TotalFrames / (int)Settings.TimeScaleUnit,
-                Settings.TimeScaleMultiplier);
+                provider.TotalFrames / (int)EffectiveConfig.TimeScaleUnit,
+                EffectiveConfig.TimeScaleMultiplier);
         }
 
         #endregion
@@ -233,7 +232,7 @@ public partial class TailScaleSettings
             VisitedRoomCount = AddStatistic(
                 Dialog.Clean(DialogRoot + "VisitedRooms"),
                 provider.MapProgression.TotalVisitedRooms,
-                Settings.MapProgressionScaleMultiplier);
+                EffectiveConfig.MapProgressionScaleMultiplier);
         }
 
         #endregion
@@ -247,7 +246,7 @@ public partial class TailScaleSettings
             MapCompletionCount = AddStatistic(
                 Dialog.Clean(DialogRoot + "MapCompletions"),
                 provider.MapProgression.TotalMapsCompleted,
-                Settings.MapProgressionScaleMultiplier);
+                EffectiveConfig.MapProgressionScaleMultiplier);
         }
 
         #endregion
@@ -276,11 +275,12 @@ public partial class TailScaleSettings
         private static string FormatSizeContribution(float value)
             => TailScaleModule.FormatScale(value, withPlusSign: true);
 
-        private static string GetLabel(TailScaleSettings settings)
+        private static string GetLabel()
         {
             string totalText = Dialog.Clean(DialogRoot + "Total");
             string scaleText = TailScaleModule.FormatScale(
-                settings.ScaleMethodImpl.GetCurrentScale(settings.StatisticProvider) / BaseTailScale);
+                EffectiveConfig.ScaleMethodImpl.GetCurrentScale(EffectiveConfig.StatisticProvider)
+                / TailScaleConfig.BaseTailScale);
             // de-tails. heheheh.
             string detailsText = Dialog.Clean(DialogRoot + "Details");
 
@@ -295,7 +295,8 @@ public partial class TailScaleSettings
         // ReSharper disable once MemberHidesStaticFromOuterClass
         private const string DialogRoot = DialogId + "_";
 
-        private readonly TailScaleSettings Settings;
+        private static TailScaleEffectiveConfig EffectiveConfig => TailScaleConfig.EffectiveConfig;
+
         private readonly bool InGame;
 
         private StatisticPersistenceMode StatisticPersistence;
@@ -316,10 +317,9 @@ public partial class TailScaleSettings
         private bool ResetMapProgression;
         private bool ResetAccumulatedScale;
 
-        public ResetStatsSubmenuImpl(TailScaleSettings settings, bool inGame)
+        public ResetStatsSubmenuImpl(bool inGame)
             : base(Dialog.Clean(DialogId), enterOnSelect: false)
         {
-            Settings = settings;
             InGame = inGame;
 
             Add(new TextMenu.SubHeader(DummyHeaderId, false));
@@ -336,7 +336,7 @@ public partial class TailScaleSettings
                 < StatisticPersistenceMode.Session => StatisticPersistenceMode.Session,
                 > StatisticPersistenceMode.SaveData => StatisticPersistenceMode.SaveData,
                 StatisticPersistenceMode.Session when !InGame => StatisticPersistenceMode.SaveData,
-                _ => Settings.StatisticPersistence,
+                _ => EffectiveConfig.StatisticPersistence,
             };
 
             ResetAllStats = true;
@@ -681,7 +681,7 @@ public partial class TailScaleSettings
 
         private void ResetStats()
         {
-            IStatisticProvider statisticProvider = Settings.GetStatisticProvider(StatisticPersistence);
+            IStatisticProvider statisticProvider = TailScaleConfig.GetStatisticProvider(StatisticPersistence);
 
             statisticProvider.ResetStats(
                 ResetAllStats || ResetCrystalHearts,

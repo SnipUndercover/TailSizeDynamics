@@ -5,7 +5,7 @@ namespace Celeste.Mod.TailSizeDynamics.StatisticProviders;
 
 [UsedImplicitly(ImplicitUseKindFlags.InstantiatedWithFixedConstructorSignature,
     Reason = "YamlDotNet requires a public parameterless constructor.")]
-public class SessionStatisticProvider : EverestModuleSession, IStatisticProvider
+public class SessionStatisticProvider : IStatisticProvider
 {
     #region Collectables
 

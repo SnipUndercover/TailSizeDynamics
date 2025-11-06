@@ -57,7 +57,7 @@ public partial class TailScaleSettings
     private void CreateStatisticsSubmenu(TextMenu menu, bool inGame)
     {
         if (inGame)
-            menu.Add(StatisticsSubmenu = new StatisticsSubmenuImpl(this));
+            menu.Add(StatisticsSubmenu = new StatisticsSubmenuImpl());
     }
 
     #endregion
@@ -80,17 +80,17 @@ public partial class TailScaleSettings
         ScaleMethodSlider.Add(
             Dialog.Clean(EnumParentId + nameof(TailScaleMethod.Off)),
             TailScaleMethod.Off,
-            ScaleMethod == TailScaleMethod.Off);
+            Configuration.ScaleMethod == TailScaleMethod.Off);
         ScaleMethodSlider.Add(
             Dialog.Clean(EnumParentId + nameof(TailScaleMethod.Additive)),
             TailScaleMethod.Additive,
-            ScaleMethod == TailScaleMethod.Additive);
+            Configuration.ScaleMethod == TailScaleMethod.Additive);
         ScaleMethodSlider.Add(
             Dialog.Clean(EnumParentId + nameof(TailScaleMethod.Accumulative)),
             TailScaleMethod.Accumulative,
-            ScaleMethod == TailScaleMethod.Accumulative);
+            Configuration.ScaleMethod == TailScaleMethod.Accumulative);
 
-        ScaleMethodSlider.Change(newValue => ScaleMethod = newValue);
+        ScaleMethodSlider.Change(newValue => Configuration.ScaleMethod = newValue);
 
         ScaleMethodSlider.AddDescription(menu, Dialog.Clean(DescriptionId + "4"));
         ScaleMethodSlider.AddDescription(menu, Dialog.Clean(DescriptionId + "3"));
@@ -120,13 +120,13 @@ public partial class TailScaleSettings
         StatisticPersistenceModeSlider.Add(
             Dialog.Clean(EnumParentId + nameof(StatisticPersistenceMode.Session)),
             StatisticPersistenceMode.Session,
-            StatisticPersistence == StatisticPersistenceMode.Session);
+            Configuration.StatisticPersistence == StatisticPersistenceMode.Session);
         StatisticPersistenceModeSlider.Add(
             Dialog.Clean(EnumParentId + nameof(StatisticPersistenceMode.SaveData)),
             StatisticPersistenceMode.SaveData,
-            StatisticPersistence == StatisticPersistenceMode.SaveData);
+            Configuration.StatisticPersistence == StatisticPersistenceMode.SaveData);
 
-        StatisticPersistenceModeSlider.Change(newValue => StatisticPersistence = newValue);
+        StatisticPersistenceModeSlider.Change(newValue => Configuration.StatisticPersistence = newValue);
 
         StatisticPersistenceModeSlider.AddDescription(menu, Dialog.Clean(DescriptionId + "2"));
         StatisticPersistenceModeSlider.AddDescription(menu, Dialog.Clean(DescriptionId + "1"));
@@ -144,10 +144,11 @@ public partial class TailScaleSettings
         // @formatter:off
         menu.Add(BaseScaleSlider = new LogarithmicScale(
             Dialog.Clean(DialogRoot + "BaseScale"),
-            BaseScale,
+            Configuration.BaseScale,
             allowNegatives: false));
         // @formatter:on
-        BaseScaleSlider.OnValueChange += newValue => BaseScale = newValue;
+        BaseScaleSlider.OnValueChange +=
+            newValue => Configuration.BaseScale = newValue;
     }
 
     #endregion
@@ -191,10 +192,10 @@ public partial class TailScaleSettings
         // @formatter:off
         menu.Add(CrystalHeartScaleMultiplierSlider = new LogarithmicScale(
             Dialog.Clean(DialogRoot + "CrystalHeartMult"),
-            CrystalHeartScaleMultiplier));
+            Configuration.CrystalHeartScaleMultiplier));
         // @formatter:on
         CrystalHeartScaleMultiplierSlider.OnValueChange +=
-            newValue => CrystalHeartScaleMultiplier = newValue;
+            newValue => Configuration.CrystalHeartScaleMultiplier = newValue;
     }
 
     #endregion
@@ -208,10 +209,10 @@ public partial class TailScaleSettings
         // @formatter:off
         menu.Add(CassetteScaleMultiplierSlider = new LogarithmicScale(
             Dialog.Clean(DialogRoot + "CassetteMult"),
-            CassetteScaleMultiplier));
+            Configuration.CassetteScaleMultiplier));
         // @formatter:on
         CassetteScaleMultiplierSlider.OnValueChange +=
-            newValue => CassetteScaleMultiplier = newValue;
+            newValue => Configuration.CassetteScaleMultiplier = newValue;
     }
 
     #endregion
@@ -225,10 +226,10 @@ public partial class TailScaleSettings
         // @formatter:off
         menu.Add(SummitGemScaleMultiplierSlider = new LogarithmicScale(
             Dialog.Clean(DialogRoot + "SummitGemMult"),
-            SummitGemScaleMultiplier));
+            Configuration.SummitGemScaleMultiplier));
         // @formatter:on
         SummitGemScaleMultiplierSlider.OnValueChange +=
-            newValue => SummitGemScaleMultiplier = newValue;
+            newValue => Configuration.SummitGemScaleMultiplier = newValue;
     }
 
     #endregion
@@ -242,10 +243,10 @@ public partial class TailScaleSettings
         // @formatter:off
         menu.Add(StrawberryScaleMultiplierSlider = new LogarithmicScale(
             Dialog.Clean(DialogRoot + "StrawberryMult"),
-            StrawberryScaleMultiplier));
+            Configuration.StrawberryScaleMultiplier));
         // @formatter:on
         StrawberryScaleMultiplierSlider.OnValueChange +=
-            newValue => StrawberryScaleMultiplier = newValue;
+            newValue => Configuration.StrawberryScaleMultiplier = newValue;
     }
 
     #endregion
@@ -281,9 +282,10 @@ public partial class TailScaleSettings
         // @formatter:off
         subMenu.Add(GoldenStrawberryScaleMultiplierSlider = new LogarithmicScale(
             Dialog.Clean(DialogRoot + "GoldenStrawberryMult"),
-            GoldenStrawberryScaleMultiplier));
+            Configuration.GoldenStrawberryScaleMultiplier));
         // @formatter:on
-        GoldenStrawberryScaleMultiplierSlider.OnValueChange += newValue => GoldenStrawberryScaleMultiplier = newValue;
+        GoldenStrawberryScaleMultiplierSlider.OnValueChange +=
+            newValue => Configuration.GoldenStrawberryScaleMultiplier = newValue;
     }
 
     #endregion
@@ -297,9 +299,10 @@ public partial class TailScaleSettings
         // @formatter:off
         subMenu.Add(WingedGoldenScaleMultiplierSlider = new LogarithmicScale(
             Dialog.Clean(DialogRoot + "WingedGoldenMult"),
-            WingedGoldenScaleMultiplier));
+            Configuration.WingedGoldenScaleMultiplier));
         // @formatter:on
-        WingedGoldenScaleMultiplierSlider.OnValueChange += newValue => WingedGoldenScaleMultiplier = newValue;
+        WingedGoldenScaleMultiplierSlider.OnValueChange +=
+            newValue => Configuration.WingedGoldenScaleMultiplier = newValue;
     }
 
     #endregion
@@ -313,9 +316,10 @@ public partial class TailScaleSettings
         // @formatter:off
         subMenu.Add(MoonberryScaleMultiplierSlider = new LogarithmicScale(
             Dialog.Clean(DialogRoot + "MoonberryMult"),
-            MoonberryScaleMultiplier));
+            Configuration.MoonberryScaleMultiplier));
         // @formatter:on
-        MoonberryScaleMultiplierSlider.OnValueChange += newValue => MoonberryScaleMultiplier = newValue;
+        MoonberryScaleMultiplierSlider.OnValueChange +=
+            newValue => Configuration.MoonberryScaleMultiplier = newValue;
     }
 
     #endregion
@@ -344,9 +348,10 @@ public partial class TailScaleSettings
         // @formatter:off
         menu.Add(DeathScaleMultiplierSlider = new LogarithmicScale(
             Dialog.Clean(DialogRoot + "DeathMult"),
-            DeathScaleMultiplier));
+            Configuration.DeathScaleMultiplier));
         // @formatter:on
-        DeathScaleMultiplierSlider.OnValueChange += newValue => DeathScaleMultiplier = newValue;
+        DeathScaleMultiplierSlider.OnValueChange +=
+            newValue => Configuration.DeathScaleMultiplier = newValue;
     }
 
     #endregion
@@ -360,9 +365,10 @@ public partial class TailScaleSettings
         // @formatter:off
         menu.Add(DashScaleMultiplierSlider = new LogarithmicScale(
             Dialog.Clean(DialogRoot + "DashMult"),
-            DashScaleMultiplier));
+            Configuration.DashScaleMultiplier));
         // @formatter:on
-        DashScaleMultiplierSlider.OnValueChange += newValue => DashScaleMultiplier = newValue;
+        DashScaleMultiplierSlider.OnValueChange +=
+            newValue => Configuration.DashScaleMultiplier = newValue;
     }
 
     #endregion
@@ -376,9 +382,10 @@ public partial class TailScaleSettings
         // @formatter:off
         menu.Add(JumpScaleMultiplierSlider = new LogarithmicScale(
             Dialog.Clean(DialogRoot + "JumpMult"),
-            JumpScaleMultiplier));
+            Configuration.JumpScaleMultiplier));
         // @formatter:on
-        JumpScaleMultiplierSlider.OnValueChange += newValue => JumpScaleMultiplier = newValue;
+        JumpScaleMultiplierSlider.OnValueChange +=
+            newValue => Configuration.JumpScaleMultiplier = newValue;
     }
 
     #endregion
@@ -392,9 +399,10 @@ public partial class TailScaleSettings
         // @formatter:off
         menu.Add(TimeScaleMultiplierSlider = new LogarithmicScale(
             Dialog.Clean(DialogRoot + "TimeMult"),
-            TimeScaleMultiplier));
+            Configuration.TimeScaleMultiplier));
         // @formatter:on
-        TimeScaleMultiplierSlider.OnValueChange += newValue => TimeScaleMultiplier = newValue;
+        TimeScaleMultiplierSlider.OnValueChange +=
+            newValue => Configuration.TimeScaleMultiplier = newValue;
     }
 
     #endregion
@@ -416,13 +424,13 @@ public partial class TailScaleSettings
         TimeScaleUnitSlider.Add(
             Dialog.Clean(EnumParentId + nameof(TimeUnit.Frames)),
             TimeUnit.Frames,
-            TimeScaleUnit == TimeUnit.Frames);
+            Configuration.TimeScaleUnit == TimeUnit.Frames);
         TimeScaleUnitSlider.Add(
             Dialog.Clean(EnumParentId + nameof(TimeUnit.Seconds)),
             TimeUnit.Seconds,
-            TimeScaleUnit == TimeUnit.Seconds);
+            Configuration.TimeScaleUnit == TimeUnit.Seconds);
 
-        TimeScaleUnitSlider.Change(newValue => TimeScaleUnit = newValue);
+        TimeScaleUnitSlider.Change(newValue => Configuration.TimeScaleUnit = newValue);
     }
 
     #endregion
@@ -436,9 +444,10 @@ public partial class TailScaleSettings
         // @formatter:off
         menu.Add(MapProgressionScaleMultiplierSlider = new LogarithmicScale(
             Dialog.Clean(DialogRoot + "MapProgressionMult"),
-            MapProgressionScaleMultiplier));
+            Configuration.MapProgressionScaleMultiplier));
         // @formatter:on
-        MapProgressionScaleMultiplierSlider.OnValueChange += newValue => MapProgressionScaleMultiplier = newValue;
+        MapProgressionScaleMultiplierSlider.OnValueChange +=
+            newValue => Configuration.MapProgressionScaleMultiplier = newValue;
     }
 
     #endregion
@@ -460,13 +469,13 @@ public partial class TailScaleSettings
         MapProgressionScaleModeSlider.Add(
             Dialog.Clean(EnumParentId + nameof(MapProgressionMode.VisitedRooms)),
             MapProgressionMode.VisitedRooms,
-            MapProgressionScaleMode == MapProgressionMode.VisitedRooms);
+            Configuration.MapProgressionScaleMode == MapProgressionMode.VisitedRooms);
         MapProgressionScaleModeSlider.Add(
             Dialog.Clean(EnumParentId + nameof(MapProgressionMode.CompletedMaps)),
             MapProgressionMode.CompletedMaps,
-            MapProgressionScaleMode == MapProgressionMode.CompletedMaps);
+            Configuration.MapProgressionScaleMode == MapProgressionMode.CompletedMaps);
 
-        MapProgressionScaleModeSlider.Change(newValue => MapProgressionScaleMode = newValue);
+        MapProgressionScaleModeSlider.Change(newValue => Configuration.MapProgressionScaleMode = newValue);
     }
 
     #endregion
@@ -492,7 +501,7 @@ public partial class TailScaleSettings
 
     private void CreateResetStatisticsSubmenu(TextMenu menu, bool inGame)
     {
-        menu.Add(ResetStatsSubmenu = new ResetStatsSubmenuImpl(this, inGame));
+        menu.Add(ResetStatsSubmenu = new ResetStatsSubmenuImpl(inGame));
         ResetStatsSubmenu.Disabled = !inGame;
     }
 
@@ -525,11 +534,11 @@ public partial class TailScaleSettings
         // @formatter:off
         menu.Add(MinigameModeToggle = new TextMenu.OnOff(
             Dialog.Clean(DialogId),
-            MinigameMode));
+            Configuration.MinigameMode));
         // @formatter:on
         MinigameModeToggle.AddDescription(menu, Dialog.Clean(DescriptionId));
 
-        MinigameModeToggle.Change(newValue => MinigameMode = newValue);
+        MinigameModeToggle.Change(newValue => Configuration.MinigameMode = newValue);
     }
 
     #endregion
@@ -550,13 +559,13 @@ public partial class TailScaleSettings
         MinigameResetModeToggle.Add(
             Dialog.Clean(EnumParentId + nameof(MinigameResetMode.ReturnToMap)),
             MinigameResetMode.ReturnToMap,
-            MinigameResetMode == MinigameResetMode.ReturnToMap);
+            Configuration.MinigameResetMode == MinigameResetMode.ReturnToMap);
         MinigameResetModeToggle.Add(
             Dialog.Clean(EnumParentId + nameof(MinigameResetMode.RestartChapter)),
             MinigameResetMode.RestartChapter,
-            MinigameResetMode == MinigameResetMode.RestartChapter);
+            Configuration.MinigameResetMode == MinigameResetMode.RestartChapter);
 
-        MinigameResetModeToggle.Change(newValue => MinigameResetMode = newValue);
+        MinigameResetModeToggle.Change(newValue => Configuration.MinigameResetMode = newValue);
     }
 
     #endregion

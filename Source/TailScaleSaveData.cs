@@ -1,13 +1,12 @@
-using Celeste.Mod.TailSizeDynamics.Config;
+﻿using Celeste.Mod.TailSizeDynamics.StatisticProviders;
 using JetBrains.Annotations;
-using YamlDotNet.Serialization;
 
 namespace Celeste.Mod.TailSizeDynamics;
 
 [UsedImplicitly(ImplicitUseKindFlags.InstantiatedWithFixedConstructorSignature,
     Reason = "YamlDotNet requires a public parameterless constructor.")]
-public partial class TailScaleSettings : EverestModuleSettings
+public class TailScaleSaveData : EverestModuleSaveData
 {
     [UsedImplicitly(Reason = "YamlDotNet requires that accessors be public.")]
-    public TailScaleSettingsConfig Configuration { get; set; } = new();
+    public SaveDataStatisticProvider Statistics { get; set; } = new();
 }

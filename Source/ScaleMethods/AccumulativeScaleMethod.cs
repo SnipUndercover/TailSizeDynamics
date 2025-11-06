@@ -1,4 +1,5 @@
-﻿using Celeste.Mod.TailSizeDynamics.Enums;
+﻿using Celeste.Mod.TailSizeDynamics.Config;
+using Celeste.Mod.TailSizeDynamics.Enums;
 using Celeste.Mod.TailSizeDynamics.StatisticProviders;
 using Monocle;
 
@@ -19,29 +20,29 @@ public class AccumulativeScaleMethod : IUpdateableScaleMethod
 
     public void UpdateScale(IStatisticProvider provider)
     {
-        TailScaleSettings settings = TailScaleModule.Settings;
+        TailScaleEffectiveConfig config = TailScaleConfig.EffectiveConfig;
 
-        float crystalHeartScale = provider.TotalCrystalHearts * settings.CrystalHeartScaleMultiplier;
-        float summitGemScale = provider.TotalSummitGems * settings.SummitGemScaleMultiplier;
-        float cassetteScale = provider.TotalCassettes * settings.CassetteScaleMultiplier;
-        float strawberryScale = provider.TotalStrawberries * settings.StrawberryScaleMultiplier;
-        float goldenStrawberryScale = provider.TotalGoldenStrawberries * settings.GoldenStrawberryScaleMultiplier;
-        float wingedGoldenScale = provider.TotalWingedGoldens * settings.WingedGoldenScaleMultiplier;
-        float moonberryScale = provider.TotalMoonberries * settings.MoonberryScaleMultiplier;
-        float deathScale = provider.TotalDeaths * settings.DeathScaleMultiplier;
-        float dashScale = provider.TotalDashes * settings.DashScaleMultiplier;
-        float jumpScale = provider.TotalJumps * settings.JumpScaleMultiplier;
-        float timeScale = provider.TotalFrames * (settings.TimeScaleMultiplier / (int)settings.TimeScaleUnit);
-        float mapProgressionScale = settings.MapProgressionScaleMode switch {
+        float crystalHeartScale = provider.TotalCrystalHearts * config.CrystalHeartScaleMultiplier;
+        float summitGemScale = provider.TotalSummitGems * config.SummitGemScaleMultiplier;
+        float cassetteScale = provider.TotalCassettes * config.CassetteScaleMultiplier;
+        float strawberryScale = provider.TotalStrawberries * config.StrawberryScaleMultiplier;
+        float goldenStrawberryScale = provider.TotalGoldenStrawberries * config.GoldenStrawberryScaleMultiplier;
+        float wingedGoldenScale = provider.TotalWingedGoldens * config.WingedGoldenScaleMultiplier;
+        float moonberryScale = provider.TotalMoonberries * config.MoonberryScaleMultiplier;
+        float deathScale = provider.TotalDeaths * config.DeathScaleMultiplier;
+        float dashScale = provider.TotalDashes * config.DashScaleMultiplier;
+        float jumpScale = provider.TotalJumps * config.JumpScaleMultiplier;
+        float timeScale = provider.TotalFrames * (config.TimeScaleMultiplier / (int)config.TimeScaleUnit);
+        float mapProgressionScale = config.MapProgressionScaleMode switch {
             MapProgressionMode.VisitedRooms =>
                 provider.MapProgression.TotalVisitedRooms,
             MapProgressionMode.CompletedMaps =>
                 provider.MapProgression.TotalMapsCompleted,
             _ => 0,
-        } * settings.MapProgressionScaleMultiplier;
+        } * config.MapProgressionScaleMultiplier;
 
         provider.AccumulatedScale += (crystalHeartScale + summitGemScale + cassetteScale + strawberryScale
             + goldenStrawberryScale + wingedGoldenScale + moonberryScale + deathScale + dashScale + jumpScale
-            + timeScale + mapProgressionScale) * TailScaleSettings.BaseTailScale * Engine.DeltaTime;
+            + timeScale + mapProgressionScale) * TailScaleConfig.BaseTailScale * Engine.DeltaTime;
     }
 }

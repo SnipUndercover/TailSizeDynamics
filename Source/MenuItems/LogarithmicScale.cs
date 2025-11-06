@@ -7,7 +7,7 @@ namespace Celeste.Mod.TailSizeDynamics.MenuItems;
 
 public class LogarithmicScale : TextMenu.Item
 {
-    private const int DigitsOfPrecision = TailScaleSettings.DigitsOfPrecision;
+    private const int DigitsOfPrecision = Config.TailScaleConfig.DigitsOfPrecision;
     private const int ZeroIndex = 1 + 9 * DigitsOfPrecision * 2;
     private const int MultiplierLength = ZeroIndex + 1 + ZeroIndex;
     private static readonly Multiplier[] Multipliers;

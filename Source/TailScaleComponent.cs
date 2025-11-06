@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using Celeste.Mod.Foxeline;
+using Celeste.Mod.TailSizeDynamics.Config;
 using Celeste.Mod.TailSizeDynamics.Enums;
 using Celeste.Mod.TailSizeDynamics.ScaleMethods;
 using Celeste.Mod.TailSizeDynamics.StatisticProviders;
@@ -12,16 +13,35 @@ public class TailScaleComponent() : Component(active: true, visible: false)
 {
     private const string LogId = $"{nameof(TailSizeDynamics)}/{nameof(TailScaleComponent)}";
 
-    private static TailScaleSettings Settings => TailScaleModule.Settings;
+    internal static void Load()
+    {
+        Everest.Events.Player.OnSpawn += Spawn;
+    }
 
-    private static IStatisticProvider StatisticProvider => Settings.StatisticProvider;
-    private static IScaleMethod ScaleMethod => Settings.ScaleMethodImpl;
+    internal static void Unload()
+    {
+        Everest.Events.Player.OnSpawn -= Spawn;
+    }
+
+    private static void Spawn(Player player)
+    {
+        if (player.Get<TailScaleComponent>() is null)
+            player.Add(new TailScaleComponent());
+    }
+
+
+    private static TailScaleEffectiveConfig EffectiveConfig => TailScaleConfig.EffectiveConfig;
+
+    private static IStatisticProvider StatisticProvider => EffectiveConfig.StatisticProvider;
+    private static IScaleMethod ScaleMethod => EffectiveConfig.ScaleMethodImpl;
 
     public static float TargetScale => MathF.Max(ScaleMethod.GetCurrentScale(StatisticProvider), 0);
 
     public int CurrentScale = (int)TargetScale;
 
     public bool TailGone { get; private set; }
+
+    public bool Disabled { get; private set; }
 
     public override void Update()
     {
@@ -31,6 +51,16 @@ public class TailScaleComponent() : Component(active: true, visible: false)
             RemoveSelf();
             return;
         }
+
+        if (ScaleMethod is not DisabledScaleMethod)
+            // we aren't disabled, so reset to false
+            Disabled = false;
+        else if (!Disabled)
+            // we still have to scale down to the initial size, only then disable
+            Disabled = CurrentScale == (int)TargetScale;
+
+        if (Disabled)
+            return;
 
         if (TailGone)
             return;
@@ -42,7 +72,7 @@ public class TailScaleComponent() : Component(active: true, visible: false)
         CurrentScale = (int)Calc.Approach(CurrentScale, TargetScale, adjustment);
         FoxelineModule.Settings.TailScale = (int)MathF.Min(CurrentScale, int.MaxValue);
 
-        if (!Settings.MinigameMode)
+        if (!EffectiveConfig.MinigameMode)
             return;
 
         if (!(CurrentScale <= 0 && player.OnGround()))
@@ -88,11 +118,11 @@ public class TailScaleComponent() : Component(active: true, visible: false)
     // taken from Celeste.UnlockEverythingThingy.UnlockEverything(Level)
     private void Reset()
         => Engine.Scene = new LevelExit(
-            Settings.MinigameResetMode switch {
+            EffectiveConfig.MinigameResetMode switch {
                 MinigameResetMode.ReturnToMap => LevelExit.Mode.GiveUp,
                 MinigameResetMode.RestartChapter => LevelExit.Mode.Restart,
                 _ => throw new InvalidOperationException(
-                    $"Invalid {nameof(MinigameResetMode)} value: {Settings.MinigameResetMode}"),
+                    $"Invalid {nameof(MinigameResetMode)} value: {EffectiveConfig.MinigameResetMode}"),
             },
             SceneAs<Level>().Session);
 }
